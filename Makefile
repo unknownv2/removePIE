@@ -1,23 +1,22 @@
 CSNAME="iPhone Developer"
 
-DEVELOPER=/Applications/Xcode.app/Contents/Developer
-PLATFORM=$(DEVELOPER)/Platforms/iPhoneOS.platform/Developer
-SDKVER = $(shell ls $(PLATFORM)/SDKs/ | tail -n 1)
-SDK=$(PLATFORM)/SDKs/$(SDKVER)
+GCC_BIN=`xcrun --sdk iphoneos --find gcc`
+GCC_UNIVERSAL=$(GCC_BASE) -arch armv7 -arch armv7s -arch arm64
+SDK=`xcrun --sdk iphoneos --show-sdk-path`
 
-CC=$(PLATFORM)/usr/bin/arm-apple-darwin10-llvm-gcc-4.2 
-CFLAGS=-ggdb -Wall -isysroot $(SDK) -I../include
+CFLAGS = 
+GCC_BASE = $(GCC_BIN) -Os $(CFLAGS) -Wimplicit -isysroot $(SDK) -F$(SDK)/System/Library/Frameworks -F$(SDK)/System/Library/PrivateFrameworks
 
-MACOSX=$(DEVELOPER)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks
-
-PROGS= removePIE
-
-all: $(PROGS)
+all: removePIE
 
 removePIE: removePIE.o 
-	$(CC) $(CFLAGS) -o $@ $^
+	$(GCC_UNIVERSAL) -o $@ $^
+	
+
+%.o: %.c
+	$(GCC_UNIVERSAL) -c -o $@ $< 
 	codesign -f -s $(CSNAME) --entitlements removePIE.xcent $@
 
 clean:
-	rm -rf *.o *.dSYM $(PROGS)
+	rm -rf *.o *.dSYM removePIE
 
