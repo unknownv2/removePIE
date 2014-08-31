@@ -5,8 +5,7 @@ This disables the Address Space Layout Randomization of an application.
 
 Building
 ========
-Building has been set-up to use OS-X, Xcode and the iOS 7.0+ SDK in 
-default directories. execute "make" from the command line to execute the included makefile.
+Execute "make" from the command line to execute the included makefile.
 
 
 Usage
@@ -19,3 +18,7 @@ root \# ./removePIE <application binary>
 The <application binary> is most likely located in a sub-directory of /private/var/mobile/Applications/ on the iphone 
 
 
+Original
+=====
+
+The original project can be found here: https://github.com/peterfillmore/removePIE. I've edited the code but the main point was to create a project that builds with Xcode 5+ as the original does not if using a iOS SDK higher than 6.0.
