@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	if((fread(&currentHeader.magic, sizeof(int32_t), 1, fp)) == (int)NULL)
 	{printf("Error reading magic constant in file\n");
 		return EXIT_FAILURE;}
-	if(currentHeader.magic == MH_MAGIC){ //little endian
+	if(currentHeader.magic == MH_MAGIC || currentHeader.magic == 0xBEBAFECA){ //little endian
 		printf("loading header\n");
 		fseek(fp, 0, SEEK_SET);
 		if((fread(&currentHeader, sizeof(currentHeader), 1, fp)) == (int)NULL)
